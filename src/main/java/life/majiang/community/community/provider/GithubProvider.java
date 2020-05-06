@@ -13,6 +13,7 @@ import java.io.IOException;
  */
 @Component
 public class GithubProvider {
+    //接受accessToken，并返回一个body().String()
     public String getAccessToken(AccessTokenDTO accessTokenDTO) {
         //  MediaType适用于描述 HTTP 请求或响应正文的内容类型。
         MediaType mediaType = MediaType.get("application/json; charset=utf-8");
@@ -21,6 +22,7 @@ public class GithubProvider {
 
 
         RequestBody body = RequestBody.create(mediaType, JSON.toJSONString(accessTokenDTO));
+        //Request即我们构建的每一个HTTP请求。通过配置请求的 地址、http方法、请求头等信息
         Request request = new Request.Builder()
                 .url("https://github.com/login/oauth/access_token")
                 .post(body)

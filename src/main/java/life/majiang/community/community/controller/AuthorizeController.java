@@ -26,7 +26,9 @@ public class AuthorizeController {
     private String clientSecret;
     @Value("github.redirect.uri")
     private String redirectUri;
-    @GetMapping("/callback")
+    @GetMapping("/callback")//处理GET请求
+
+    //@RequestParam（name="code"）里面code是前端传进的code，在后端用String code来接受
     public String callback(@RequestParam(name="code")String code,
                            @RequestParam(name ="state") String state){
         AccessTokenDTO accessTokenDTO=new AccessTokenDTO();
