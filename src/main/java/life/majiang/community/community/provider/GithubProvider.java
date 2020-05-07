@@ -20,17 +20,19 @@ public class GithubProvider {
 
         OkHttpClient client = new OkHttpClient();
 
-
+        String a=accessTokenDTO.toString();
+        System.out.println("accesstoken:"+a);
         RequestBody body = RequestBody.create(mediaType, JSON.toJSONString(accessTokenDTO));
+        System.out.println(body);
         //Request即我们构建的每一个HTTP请求。通过配置请求的 地址、http方法、请求头等信息
         Request request = new Request.Builder()
                 .url("https://github.com/login/oauth/access_token")
                 .post(body)
                 .build();
         try (Response response = client.newCall(request).execute()) {
-            String string = response.body().string();
-            System.out.println(string);
-            return string;
+            String response_string = response.body().string();
+            System.out.println("response_string:"+response_string);
+            return response_string;
         } catch (IOException e) {
 
         }
@@ -42,16 +44,18 @@ public class GithubProvider {
     public GithubUser githubUser(String accessToken){
         OkHttpClient client= new OkHttpClient();
         Request request = new Request.Builder()
-                .url("https://api.github.com/user?access_token="+accessToken)
+                .url("https://api.github.com/user?"+accessToken)
                 .build();
        try {
            //通过Call 来执行同步或异步请求，调用execute方法同步执行，调用enqueue方法异步执行
-           Response response=client.newCall(request).execute();
-           String string=response.body().string();
+           Response response = client.newCall(request).execute();
+           String string = response.body().string();
+           System.out.println("response.body().string():"+string);
+
            //JSON.parseObject,是讲Json字符串转化为相应的对象；JSON.toJSONString则是将对象转化为Json字符串，在前后台的传输过程中，Json字符串是相当常用到的
-           GithubUser githubUser = JSON.parseObject(string, GithubUser.class);
-           return githubUser;
-       }catch (IOException e){
+           //System.out.println("User.toString():"+User.toString());
+           return JSON.parseObject(string, GithubUser.class);
+       }catch (Exception e){
     }
        return null;
 }
