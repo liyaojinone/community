@@ -31,7 +31,6 @@ public class GithubProvider {
                 .build();
         try (Response response = client.newCall(request).execute()) {
             String response_string = response.body().string();
-            System.out.println("response_string:"+response_string);
             return response_string;
         } catch (IOException e) {
 
@@ -50,12 +49,13 @@ public class GithubProvider {
            //通过Call 来执行同步或异步请求，调用execute方法同步执行，调用enqueue方法异步执行
            Response response = client.newCall(request).execute();
            String string = response.body().string();
-           System.out.println("response.body().string():"+string);
+           //System.out.println("response.body().string():"+string);
 
            //JSON.parseObject,是讲Json字符串转化为相应的对象；JSON.toJSONString则是将对象转化为Json字符串，在前后台的传输过程中，Json字符串是相当常用到的
-           //System.out.println("User.toString():"+User.toString());
+
            return JSON.parseObject(string, GithubUser.class);
        }catch (Exception e){
+
     }
        return null;
 }
