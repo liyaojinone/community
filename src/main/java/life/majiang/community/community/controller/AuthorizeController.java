@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import java.util.UUID;
 
@@ -41,6 +43,7 @@ public class AuthorizeController {
     //@RequestParam（name="code"）里面code是前端传进的code，在后端用String code来接受
     public String callback(@RequestParam(name="code")String code,
                            @RequestParam(name ="state") String state,
+                           HttpServletResponse response,
                            HttpServletRequest request
                            ){
         AccessTokenDTO accessTokenDTO=new AccessTokenDTO();
@@ -50,7 +53,8 @@ public class AuthorizeController {
         accessTokenDTO.setState(state);
         accessTokenDTO.setRedirect_uri(redirectUri);
         String accessToken = githubProvider.getAccessToken(accessTokenDTO);
-        GithubUser user=githubProvider.githubUser(accessToken);
+
+        GithubUser user = githubProvider.githubUser(accessToken);
 
         if(user !=null){
             //登录成功
@@ -58,18 +62,18 @@ public class AuthorizeController {
             User userPerson=new User();
 
             userPerson.setId(null);
-            userPerson.setToken(UUID.randomUUID().toString());
+            String token = UUID.randomUUID().toString();
+            userPerson.setToken(token);
             userPerson.setName(user.getName());
             userPerson.setAccountId(String.valueOf(user.getId()));
             userPerson.setGmtCreate(System.currentTimeMillis());
             userPerson.setGmtModified(userPerson.getGmtCreate());
             userMapper.insert(userPerson);
 
+            //添加cookie
+            response.addCookie(new Cookie("token",token));
 
 
-
-            //serAttribute设置session
-            request.getSession().setAttribute("user",user);
 
             System.out.println("user存在！！！！！");
             return "redirect:/";//加上redirect后,地址会重定向到index

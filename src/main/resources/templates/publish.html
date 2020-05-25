@@ -1,10 +1,98 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
+    <title>麻将社区</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script src="/js/bootstrap.js" type="application/javascript"></script>
+    <link rel ="stylesheet" href="/css/bootstrap.min.css"/>
+    <link rel ="stylesheet" href="/css/bootstrap-theme.min.css"/>
+    <link rel ="stylesheet" href="/css/community.css"/>
+
 <body>
-$END$
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">麻将社区</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">麻将社区</a>
+        </div>
+
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">项目案例 <span class="sr-only"></span></a></li>
+                <li><a href="#">热度代码</a></li>
+
+            </ul>
+            <form class="navbar-form navbar-left">
+                <div class="form-group">
+                    <label>
+                        <input type="text" class="form-control" placeholder="搜索问题">
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-default">搜索</button>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                <li th:if=" ${session.user == null}">
+                    <a href="https://github.com/login/oauth/authorize?client_id=f68c214d0aa0710800cc&state=123456&redirect_uri=http://localhost:8885/callback">登录</a>
+                </li>
+                <li class="dropdown" th:if="${session.user != null}">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false" th:text="${session.user.getName()}"><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">消息中心</a></li>
+                        <li><a href="#">个人资料</a></li>
+                        <li><a href="#">退出登陆</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</nav>
+<div class="col-xs-12 col-md-12 col-lg-9" >
+
+    <h2><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>发起</h2>
+    <hr>
+    <form action="/publish" method="post" >
+        <div class="form-group">
+            <label for="title">问题标题：</label>
+            <input type="text" class="form-control" id="title" name="title" placeholder="问题标题...">
+        </div>
+        <div class="form-group">
+            <label for="title">问题补充：</label>
+            <textarea  class="form-control" name="description" id="description" cols="30" rows="10"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="tag">添加标签：</label>
+            <input type="text" class="form-control" id="tag" name="tag" placeholder="输入标签，以，号分隔">
+        </div>
+            <p th:text="${error}"></p>
+            <button type="submit" class="btn btn-success btn-publish ">发布</button>
+
+    </form>
+</div>
+<div class=" col-xs-12 col-md-12 col-lg-3" >
+    <h3>问题发起指南</h3>
+    <a href="#" class="thumbnail">
+        <img src="image/1.jpg" alt="...">
+    </a>
+    <h4>一、问题策略</h4>
+    <p>当然能原创自然是最好不过的，但是如果你实在是黔驴技穷也可以进行伪原创，找同行业优秀的点击率高的文章，然后用自己的话把它重新描述出来，或者引用书中的内容，根据自身情况再添加一些内容，又或者找几篇相关文章，然后拼凑成一篇，只要语句通畅，逻辑清晰就行。
+    </p>
+    <h4>二、问题周期</h4>
+    <p>要有问题的发布周期，如果你的网站定期发布文章，搜索引擎蜘蛛也会定期光顾你的网站，用户觉得有用也会定期查看你的网站。
+    </p>
+    <h4>三、问题内容</h4>
+    <p>写问题不一定要一直围绕核心关键词去做文章，核心词一般搜索指数较大，优化难度较高。前期我们可以先从长尾词入手，围绕长尾关键词去做文章，等长尾词慢慢做上去了，你的整站权重也差不多了，那时核心关键词做上去自然只是时间问题。
+    </p>
+    <h4>四、问题质量</h4>
+    <p>前面我们讲写作策略可以进行伪原创，但是，竟然是伪原创，我们就要检测一下文章与原创的相似度，我们可以利用一些工具对自己编辑的伪原创文章进行自查，如果原创度在75%左右就证明你的文章质量还行，可以发表。
+    </p>
+</div>
 </body>
 </html>
